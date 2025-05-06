@@ -9,7 +9,7 @@ namespace EmployeeManagement.Persistence.Frameworks.Contexts
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=DESKTOP-CR0ELGM;Database=EmployeeManagement;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=True; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-CR0ELGM;Database=EmployeeManagementDb;Trusted_Connection=True; ;Integrated Security=true;TrustServerCertificate=True;");
             return new AppDbContext(optionsBuilder.Options);
         }
         

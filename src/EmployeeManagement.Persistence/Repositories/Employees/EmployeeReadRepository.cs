@@ -1,0 +1,28 @@
+﻿using EmployeeManagement.Domain.Entities.Employees;
+using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
+using EmployeeManagement.Persistence.Frameworks.Contexts;
+using Microsoft.EntityFrameworkCore;
+
+namespace EmployeeManagement.Persistence.Repositories.Employees;
+
+public class EmployeeReadRepository :IEmployeeReadRepository
+{
+  private  readonly AppDbContext _appDbContext;
+
+    public EmployeeReadRepository(AppDbContext appDbContext)
+    {
+        _appDbContext = appDbContext;
+    }
+
+    public async Task<Employee> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _appDbContext.Employees
+            .FirstOrDefaultAsync(e => e.Id == new EmployeeId(id), cancellationToken);
+    }
+    public async Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _appDbContext.Employees
+            .ToListAsync(cancellationToken);
+    }
+    
+}

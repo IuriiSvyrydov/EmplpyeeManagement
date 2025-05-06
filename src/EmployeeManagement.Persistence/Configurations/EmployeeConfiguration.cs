@@ -10,10 +10,18 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.ToTable(Constants.Constants.Table.Employees);
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedNever()
-            .HasConversion(x => x.Value, value => EmployeeId.NewId());
+        builder.HasKey(e => e.Id);
+        
+        builder.Property(e => e.Id)
+            .HasConversion(
+                id => id.Value,
+                value => EmployeeId.Create(value).Value);
+
+        builder.Property(e => e.DateOfBirth)
+            .HasConversion(
+                dob => dob.Value,
+                value => new DateOfBirth(value));
+
         builder.Property(x => x.FirstName).IsRequired()
             .HasConversion(x=>x.Value,value=>new FirstName(value));
         builder.Property(x => x.LastName).IsRequired()

@@ -24,7 +24,7 @@ namespace EmployeeManagement.Domain.Common.Results
             IsSuccess = false;
             Error = error;
         }
-        public static Result<T> Success(T value) => new(value);
+        public static Result<T> Success(T value, string successfullyRetrievedEmployee) => new(value);
         public static Result<T> Failure(Error error) => new(error);
     }
 }
