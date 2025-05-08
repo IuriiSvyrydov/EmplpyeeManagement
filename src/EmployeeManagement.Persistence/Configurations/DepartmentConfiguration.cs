@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Domain.Entities.Departments;
 using EmployeeManagement.Domain.Entities.Departments.ValueObject;
+using EmployeeManagement.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,7 +13,7 @@ internal class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.ToTable(Constants.Constants.Table.Departments);
         builder.HasKey(x => x.DepartmentId);
         builder.Property(x => x.DepartmentId).ValueGeneratedNever()
-            .HasConversion(x=>x.Value,value=> DepartmentId.NewId());
+            .HasConversion<DepartmentIdConverter, DepartmentIdComparer>();
         builder.Property(x => x.Name).IsRequired()
         .HasMaxLength(100)
         .HasConversion(x=>x.Value,value=>new Name(value));

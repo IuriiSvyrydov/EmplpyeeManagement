@@ -3,6 +3,7 @@ using EmployeeManagement.Domain.Entities.Departments.ValueObject;
 using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
 using EmployeeManagement.Domain.Entities.UserActivities;
 using EmployeeManagement.Domain.Entities.ValueObjects;
+using MiddleName = EmployeeManagement.Domain.Entities.Employees.ValueObjects.MiddleName;
 
 namespace EmployeeManagement.Domain.Entities.Employees;
 

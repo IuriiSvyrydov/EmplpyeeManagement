@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Employees\Commands\" />
+    <Folder Include="Features\Departments\" />
   </ItemGroup>
 
 </Project>

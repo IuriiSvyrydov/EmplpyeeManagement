@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Domain.Entities.Employees;
 using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
 using EmployeeManagement.Domain.Entities.ValueObjects;
+using EmployeeManagement.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,12 +11,12 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
+        builder.ToTable(Constants.Constants.Table.Employees);
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).ValueGeneratedNever()
+            .HasConversion<EmployeeIdConverter,EmployeeIdComparer>();
         
-        builder.Property(e => e.Id)
-            .HasConversion(
-                id => id.Value,
-                value => EmployeeId.Create(value).Value);
+        
 
         builder.Property(e => e.DateOfBirth)
             .HasConversion(
@@ -27,7 +28,7 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(x => x.LastName).IsRequired()
             .HasConversion(x=>x.Value,value=>new LastName(value));
         builder.Property(x => x.MiddleName).IsRequired()
-            .HasConversion(x=>x.value,value=>new MiddleName(value));
+            .HasConversion(x=>x.Value,value=>new Domain.Entities.Employees.ValueObjects.MiddleName(value));
         builder.Property(x => x.DateOfBirth).IsRequired()
             .HasConversion(x=>x.Value,value=>new DateOfBirth(value));
         builder.Property(x => x.EmailAddress).IsRequired()

@@ -5,24 +5,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Persistence.Repositories.Employees;
 
-public class EmployeeReadRepository :IEmployeeReadRepository
+public class EmployeeReadRepository : IEmployeeReadRepository
 {
-  private  readonly AppDbContext _appDbContext;
+    private readonly AppDbContext _appDbContext;
 
     public EmployeeReadRepository(AppDbContext appDbContext)
     {
         _appDbContext = appDbContext;
     }
 
-    public async Task<Employee> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await _appDbContext.Employees
-            .FirstOrDefaultAsync(e => e.Id == new EmployeeId(id), cancellationToken);
-    }
+public async Task<Employee?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+{
+    var employeeIdResult = EmployeeId.Create(id);
+    var employeeId = employeeIdResult.Value;
+    
+    return await _appDbContext.Employees
+        .Where(e => e.Id == employeeId)
+        .FirstOrDefaultAsync(cancellationToken);
+}
+
     public async Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await _appDbContext.Employees
             .ToListAsync(cancellationToken);
     }
-    
 }

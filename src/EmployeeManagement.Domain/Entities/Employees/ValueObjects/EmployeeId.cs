@@ -5,6 +5,9 @@ namespace EmployeeManagement.Domain.Entities.Employees.ValueObjects;
 
 public sealed class EmployeeId : ValueObject<Guid>
 {
+    private EmployeeId()
+    {
+    }
     public EmployeeId(Guid value) : base(value)
     {
     }

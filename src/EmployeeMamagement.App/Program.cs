@@ -1,5 +1,4 @@
 using EmployeeMamagement.App.Extensions;
-using EmployeeManagement.App.Extensions;
 using EmployeeManagement.Application.Extensions;
 using EmployeeManagement.Persistence.Extensions;
 using EmployeeManagement.Persistence.Identity;
@@ -21,6 +20,9 @@ if (app.Environment.IsDevelopment())
 {
     app.ConfigureSwagger();
 }
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthorization();
 app.MapControllers();
 app.UseCors("AllowUIOrigin");
 app.UseAuthentication();

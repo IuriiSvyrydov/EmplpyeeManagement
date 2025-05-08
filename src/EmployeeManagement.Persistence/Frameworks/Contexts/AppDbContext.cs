@@ -7,7 +7,7 @@ using EmployeeManagement.Domain.Entities.Employees;
 
 namespace EmployeeManagement.Persistence.Frameworks.Contexts;
 
-public sealed class AppDbContext : IdentityDbContext<User>
+public sealed class AppDbContext: IdentityDbContext<User>
 {
     public AppDbContext(DbContextOptions<AppDbContext>options):base(options)
     {

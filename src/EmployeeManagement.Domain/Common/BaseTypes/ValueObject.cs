@@ -9,6 +9,10 @@ namespace EmployeeManagement.Domain.Common.BaseTypes
     {
         public T Value { get;  }
 
+        public ValueObject()
+        {
+            
+        }
         protected ValueObject(T value)
         {
             Value = value;

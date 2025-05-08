@@ -1,4 +1,4 @@
-﻿namespace EmployeeManagement.App.Extensions;
+﻿namespace EmployeeMamagement.App.Extensions;
 
 public static class RegisterCorsExtensions
 {
@@ -8,7 +8,7 @@ public static class RegisterCorsExtensions
         {
             options.AddPolicy("AllowUIOrigin", builder =>
             {
-                builder.WithOrigins(configuration["AllowedOrigins:UI" ?? "https://localhost:7028"])
+                builder.WithOrigins("https://localhost:5077")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();

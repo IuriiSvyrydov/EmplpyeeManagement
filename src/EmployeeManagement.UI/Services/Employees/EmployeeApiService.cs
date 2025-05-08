@@ -1,33 +1,133 @@
 ﻿using System.Text;
+using EmployeeManagement.UI.Dtos;
 using System.Text.Json;
+using EmployeeManagement.UI.ErrorModel;
+using EmployeeManagement.UI.Models;
+using EmployeeManagement.UI.Services.Employees;
 
 namespace EmployeeManagement.UI.Services.Employees;
 
-public class EmployeeApiService:IEmployeeApiService
+public class EmployeeApiServiceBase
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public EmployeeApiService(IHttpClientFactory httpClientFactory)
+    protected static Result<T> CreateErrorResult<T>(string code, string message) where T : class
     {
-        _httpClientFactory = httpClientFactory;
+        return new Result<T>
+        {
+            Value = default,
+            IsSuccess = false,
+            IsFailure = true,
+            Error = new Error(code, message)
+        };
+    }
+}
+
+public class EmployeeApiService : EmployeeApiServiceBase, IEmployeeApiService
+{
+    private readonly HttpClient _httpClient;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
+
+    public EmployeeApiService(HttpClient httpClient, JsonSerializerOptions jsonSerializerOptions)
+    {
+        _httpClient = httpClient;
+        _jsonSerializerOptions = jsonSerializerOptions;
     }
 
-    public async Task<TResponse> SendAsync<TResponse, TRequest>(string endpoint, HttpMethod method, TRequest? request = default)
+    public async Task<Result<List<EmployeeDto>>> GetAllEmployeesAsync()
     {
-        var client = _httpClientFactory.CreateClient("EmployeeAPI");
-        var httpRequest = new HttpRequestMessage(method, endpoint);
-        if (request !=null)
+        try
         {
-            httpRequest.Content = new StringContent(
-                JsonSerializer.Serialize(request),
-                Encoding.UTF8,
-                "application/json");
+            using var response = await _httpClient.GetAsync("api/employees", HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+        
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<Result<List<EmployeeDto>>>(content, _jsonSerializerOptions);
+        
+            return result ?? CreateErrorResult<List<EmployeeDto>>("DESERIALIZATION_ERROR", "Desirialization result is null");
         }
-        var response = await client.SendAsync(httpRequest);
-        response.EnsureSuccessStatusCode();
-        var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<TResponse>(responseContent)!;
+        catch (JsonException ex)
+        {
+            return CreateErrorResult<List<EmployeeDto>>("DESERIALIZATION_ERROR", ex.Message);
+        }
+        catch (HttpRequestException ex)
+        {
+            return CreateErrorResult<List<EmployeeDto>>("HTTP_REQUEST_ERROR", ex.Message);
+        }
+    }
 
+    public async Task<Result<EmployeeDto>> GetEmployeeByIdAsync(Guid id)
+    {
+        try
+        {
+            using var response = await _httpClient.GetAsync($"api/employees/{id}", HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+        
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<Result<EmployeeDto>>(content, _jsonSerializerOptions);
+        
+            return result ?? CreateErrorResult<EmployeeDto>("DESERIALIZATION_ERROR", "Desirialization result is null");
+        }
+        catch (JsonException ex)
+        {
+            return CreateErrorResult<EmployeeDto>("DESERIALIZATION_ERROR", ex.Message);
+        }
+        catch (HttpRequestException ex)
+        {
+            return CreateErrorResult<EmployeeDto>("HTTP_REQUEST_ERROR", ex.Message);
+        }
+    }
 
+    public async Task<Result<EmployeeDto>> CreateEmployeeAsync(CreateEmployeeDto employee)
+    {
+        if (employee == null)
+        {
+            return CreateErrorResult<EmployeeDto>(Errors.VALIDATIONERROR, "Employee can not be null");
+        }
+
+        try
+        {
+            var json = JsonSerializer.Serialize(employee, _jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+        
+            using var response = await _httpClient.PostAsync("api/employees", content);
+        
+            if (!response.IsSuccessStatusCode)
+            {
+                return CreateErrorResult<EmployeeDto>(Errors.APIERROR, 
+                    $" Create employee error: {response.StatusCode}");
+            }
+        
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<Result<EmployeeDto>>(responseContent, _jsonSerializerOptions);
+        
+            return result ?? CreateErrorResult<EmployeeDto>(Errors.DESERIALIZATIONERROR, 
+                "Internal server error. Desirialization result is null");
+        }
+        catch (JsonException ex)
+        {
+            return CreateErrorResult<EmployeeDto>("DESERIALIZATION_ERROR", 
+                $"Error serialization/ desirialization: {ex.Message}");
+        }
+        catch (HttpRequestException ex)
+        {
+            return CreateErrorResult<EmployeeDto>(Errors.HTTPREQUESTERROR, 
+                $"Error HTTP request: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            return CreateErrorResult<EmployeeDto>(Errors.UNEXPECTEDERROR, 
+                $"Unexpected error: {ex.Message}");
+        }
+
+        
+    }
+
+    public async  Task<Result<EmployeeDto>> UpdateEmployeeAsync(Guid id, UpdateEmployeeDto employee)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Result<bool>> DeleteEmployeeAsync(Guid id)
+    {
+      throw new NotImplementedException();
     }
 }

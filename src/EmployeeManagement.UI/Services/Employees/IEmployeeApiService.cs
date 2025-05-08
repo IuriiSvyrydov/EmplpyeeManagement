@@ -1,7 +1,15 @@
-﻿namespace EmployeeManagement.UI.Services.Employees;
+﻿using EmployeeManagement.UI.Dtos;
+using EmployeeManagement.UI.Models;
+
+namespace EmployeeManagement.UI.Services.Employees;
 
 public interface IEmployeeApiService
 {
-    Task<TResponse>SendAsync<TResponse,TRequest>(string endpoint, HttpMethod method, TRequest? request = default);
-    
+    Task<Result<List<EmployeeDto>>> GetAllEmployeesAsync();
+    Task<Result<EmployeeDto>> GetEmployeeByIdAsync(Guid id);
+    Task<Result<EmployeeDto>> CreateEmployeeAsync(CreateEmployeeDto employee);
+    Task<Result<EmployeeDto>> UpdateEmployeeAsync(Guid id, UpdateEmployeeDto employee);
+    Task<Result<bool>> DeleteEmployeeAsync(Guid id);
+
+
 }
