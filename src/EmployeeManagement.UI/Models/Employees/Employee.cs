@@ -23,6 +23,10 @@ namespace EmployeeManagement.UI.Models.Employees
         public Department Department { get; set; }
         public DepartmentId DepartmentId { get; set; }
         public string Designation { get; set; }
+        public string ? CreateById { get; set; }
+        public DateTime CreateOn { get; set; } = DateTime.Now;
+        public string ? ModifiedById { get; set; }
+        public DateTime ModifiedOn { get; set; } = DateTime.Now;
 
     }
 }

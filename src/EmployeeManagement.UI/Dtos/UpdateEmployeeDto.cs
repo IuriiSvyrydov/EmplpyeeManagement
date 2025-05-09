@@ -15,4 +15,8 @@ public class UpdateEmployeeDto
     //relation
     public Guid DepartmentId { get; set; }
     public string Designation { get; set; }
+    public string CreateById { get; set; }
+    public DateTime CreateOn { get; set; }
+    public string ModifiedById { get; set; }
+    public DateTime ModifiedOn { get; set; }
 }
