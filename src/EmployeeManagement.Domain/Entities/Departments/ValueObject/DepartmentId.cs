@@ -5,7 +5,7 @@ namespace EmployeeManagement.Domain.Entities.Departments.ValueObject;
 
 public class DepartmentId : ValueObject<Guid>
 {
-    public DepartmentId(Guid value) : base(value)
+    private DepartmentId(Guid value) : base(value)
     {
     }
     public static ValidationResult<DepartmentId> Create(Guid value)

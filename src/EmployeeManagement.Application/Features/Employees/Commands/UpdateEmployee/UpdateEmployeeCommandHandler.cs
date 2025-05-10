@@ -3,7 +3,6 @@ using AutoMapper;
 using EmployeeManagement.Domain.Common.Results;
 using EmployeeManagement.Domain.Entities.Employees;
 using EmployeeManagement.Domain.Common.Errors;
-using EmployeeManagement.Application.Mapping;
 
 namespace EmployeeManagement.Application.Features.Employees.Commands.UpdateEmployee
 {

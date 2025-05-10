@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManagement.Persistence.Converters;
 
-public class DepartmentIdConverter : ValueConverter<DepartmentId, Guid>
+public class DepartmentIdConverter : ValueConverter<DepartmentId,Guid>
 {
     public DepartmentIdConverter() : base(e => e.Value,
         id => DepartmentId.Create(id).Value)

@@ -1,13 +1,10 @@
-
-using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
+using EmployeeManagement.Domain.Common;
 
 namespace EmployeeManagement.Domain.Entities.Employees
 {
-    public interface IEmployeeWriteRepository
+    public interface IEmployeeWriteRepository: IWriteRepository<Employee>
     {
        
-        Task AddAsync(Employee employee, CancellationToken cancellationToken = default);
-        Task UpdateAsync(Employee employee, CancellationToken cancellationToken = default);
-        Task DeleteAsync(Employee employee, CancellationToken cancellationToken = default);
+       
     }
 }

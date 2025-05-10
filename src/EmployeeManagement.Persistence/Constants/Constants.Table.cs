@@ -11,6 +11,11 @@ namespace EmployeeManagement.Persistence.Constants
         {
             public const string Employees = "employees";
             public const string Departments = "departments";
+            public const string Designations = "designations";
+            public const string Orders  = "orders";
+            public const string Banks = "banks";
+            public const string SystemCodeDetail = "system_code_details";
+            public const string LeaveTypes = "leave_types";
             public const string Users = "users";
         }
     }

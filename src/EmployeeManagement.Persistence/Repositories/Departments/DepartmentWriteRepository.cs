@@ -2,32 +2,15 @@
 using EmployeeManagement.Domain.Common;
 using EmployeeManagement.Domain.Entities.Departments;
 using EmployeeManagement.Persistence.Frameworks.Contexts;
+using EmployeeManagement.Persistence.Repositories.GenericRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Persistence.Repositories.Departments
 {
-   public sealed class DepartmentWriteRepository : IDepartmentWriteRepository
+    public sealed class DepartmentWriteRepository : WriteRepository<Department>, IDepartmentWriteRepository
     {
-        private readonly AppDbContext _appDbContext;
-        private readonly IUnitOfWork _unitOfWork;
-        public DepartmentWriteRepository(AppDbContext appDbContext, IUnitOfWork unitOfWork)
+        public DepartmentWriteRepository(DbContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
-            _appDbContext = appDbContext;
-            _unitOfWork = unitOfWork;
-        }
-        public async Task AddAsync(Department department, CancellationToken cancellationToken)
-        {
-            await _appDbContext.Departments.AddAsync(department, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-        }
-        public async Task UpdateAsync(Department department, CancellationToken cancellationToken)
-        {
-            _appDbContext.Departments.Update(department);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-        }
-        public async Task DeleteAsync(Department department, CancellationToken cancellationToken)
-        {
-            _appDbContext.Departments.Remove(department);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

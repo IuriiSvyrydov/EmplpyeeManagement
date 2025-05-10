@@ -3,7 +3,7 @@ using EmployeeManagement.Domain.Common.Results;
 
 namespace EmployeeManagement.UI.Models.Employees.ValueObjects;
 
-public sealed class EmployeeId : ValueObject<Guid>
+public sealed class EmployeeId : BaseTypes.ValueObject<Guid>
 {
     public EmployeeId(Guid value) : base(value)
     {

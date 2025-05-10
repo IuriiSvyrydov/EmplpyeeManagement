@@ -11,8 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Entities\Banks\Events\" />
     <Folder Include="Entities\Departments\Events\" />
     <Folder Include="Entities\Employees\Events\" />
+    <Folder Include="Entities\LeaveTypes\Events\" />
+    <Folder Include="Entities\SystemCodeDetails\Events\" />
     <Folder Include="Entities\Users\Events\" />
   </ItemGroup>
 

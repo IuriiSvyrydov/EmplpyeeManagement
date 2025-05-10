@@ -1,4 +1,5 @@
 ﻿
+using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
 using EmployeeManagement.Domain.Entities.Users;
 using EmployeeManagement.Domain.Entities.ValueObjects;
 using Microsoft.EntityFrameworkCore;

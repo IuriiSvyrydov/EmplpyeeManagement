@@ -14,6 +14,9 @@ internal class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.HasKey(x => x.DepartmentId);
         builder.Property(x => x.DepartmentId).ValueGeneratedNever()
             .HasConversion<DepartmentIdConverter, DepartmentIdComparer>();
+        builder.Property(x => x.Code).IsRequired()
+            .HasMaxLength(10)
+            .HasConversion(x=>x.Value,value=>new Code(value));
         builder.Property(x => x.Name).IsRequired()
         .HasMaxLength(100)
         .HasConversion(x=>x.Value,value=>new Name(value));

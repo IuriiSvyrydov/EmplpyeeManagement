@@ -24,6 +24,7 @@ public class EmployeesController : Controller
  
         return View("Error");
     }
+    [HttpGet]
     public async Task<IActionResult>Details(Guid id)
     {
         if (id == null)
@@ -58,9 +59,29 @@ public class EmployeesController : Controller
       
 
     }
-    public  async Task<IActionResult>Update()
+
+    [HttpGet]
+    public async Task<IActionResult> Update()
     {
         return View();
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public  async Task<IActionResult>Update(Guid id, UpdateEmployeeDto employee)
+    {
+        var findEmployee = await _employeeService.GetEmployeeByIdAsync(id);
+        if(!findEmployee.IsSuccess || findEmployee.Value == null)
+        {
+            return NotFound();
+        }
+        employee.EmployeeId = id;
+        var result = await _employeeService.UpdateEmployeeAsync(id, employee);
+        if (!result.IsSuccess)
+        {
+            ModelState.AddModelError("", result.Error.Message);
+            return View(employee);
+        }
+        return RedirectToAction(nameof(Index));
     }
     public async Task<IActionResult>Delete()
     {

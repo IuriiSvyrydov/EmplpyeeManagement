@@ -1,10 +1,8 @@
-﻿using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
+﻿using EmployeeManagement.Domain.Common.Results;
+
 
 namespace EmployeeManagement.Domain.Entities.Employees;
 
-public interface IEmployeeReadRepository
+public interface IEmployeeReadRepository : IReadRepository<Employee>
 {
-    Task<Employee> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default);
-    
 }
