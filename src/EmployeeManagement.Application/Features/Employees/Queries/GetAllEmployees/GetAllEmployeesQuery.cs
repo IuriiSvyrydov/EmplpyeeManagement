@@ -1,10 +1,8 @@
-using MediatR;
-using EmployeeManagement.Domain.Common.Results;
-using EmployeeManagement.Application.Features.Employees;
 
+using EmployeeManagement.Application.Messaging;
 
 namespace EmployeeManagement.Application.Features.Employees.Queries.GetAllEmployees
 {
-    public record GetAllEmployeesQuery : IRequest<Result<List<EmployeeResponse>>>;
+    public record GetAllEmployeesQuery : IQuery<List<EmployeeResponse>>;
     
 }

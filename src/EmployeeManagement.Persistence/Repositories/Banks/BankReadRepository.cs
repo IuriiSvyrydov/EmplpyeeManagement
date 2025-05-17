@@ -1,18 +1,17 @@
 ﻿using EmployeeManagement.Domain.Entities.Banks;
+using EmployeeManagement.Domain.Entities.Banks.ValueObject;
+using EmployeeManagement.Persistence.Frameworks.Contexts;
 using EmployeeManagement.Persistence.Repositories.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeManagement.Persistence.Repositories.Banks
 {
-    public class BankReadRepository : ReadRepository<Bank>, IBankReadRepository
+    public class BankReadRepository : ReadRepository<Bank,BankId>, IBankReadRepository
     {
-        public BankReadRepository(DbContext context) : base(context)
+        public BankReadRepository(AppDbContext context) : base(context)
         {
         }
+
+       
     }
 }

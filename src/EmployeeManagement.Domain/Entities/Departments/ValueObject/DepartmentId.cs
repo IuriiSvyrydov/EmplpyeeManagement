@@ -5,9 +5,15 @@ namespace EmployeeManagement.Domain.Entities.Departments.ValueObject;
 
 public class DepartmentId : ValueObject<Guid>
 {
-    private DepartmentId(Guid value) : base(value)
+    // Этот конструктор нужен для EF Core
+    protected DepartmentId() : base(default)
     {
     }
+
+    public DepartmentId(Guid value) : base(value)
+    {
+    }
+
     public static ValidationResult<DepartmentId> Create(Guid value)
     {
         var errors = new List<string>();
@@ -15,6 +21,7 @@ public class DepartmentId : ValueObject<Guid>
         return errors.Count == 0 ? ValidationResult<DepartmentId>.Success(new DepartmentId(value))
             : ValidationResult<DepartmentId>.Failed(errors);
     }
+
     public static DepartmentId NewId()
     {
         return Create(Guid.NewGuid()).Value;

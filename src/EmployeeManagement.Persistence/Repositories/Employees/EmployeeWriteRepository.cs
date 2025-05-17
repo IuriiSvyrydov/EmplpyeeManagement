@@ -8,7 +8,7 @@ namespace EmployeeManagement.Persistence.Repositories.Employees;
 
 public sealed class EmployeeWriteRepository: WriteRepository<Employee>, IEmployeeWriteRepository
 {
-    public EmployeeWriteRepository(DbContext context) : base(context, null)
+    public EmployeeWriteRepository(AppDbContext context,IUnitOfWork unitOfWork) : base(context, unitOfWork)
     {
     }
 

@@ -1,12 +1,15 @@
 using EmployeeManagement.UI.Extensions;
 using EmployeeManagement.UI.Services.Employees;
 using System.Text.Json;
+using EmployeeManagement.UI.Services.Departments;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.RegisterUIServices(builder.Configuration);
+builder.Services.RegisterDepartmentService(builder.Configuration);
 
 //builder.Services.AddScoped<EmployeeApiService>();
 builder.Services.AddSingleton(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

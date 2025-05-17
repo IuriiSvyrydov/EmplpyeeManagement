@@ -9,6 +9,8 @@ using EmployeeManagement.Persistence.Repositories.Departments;
 using EmployeeManagement.Domain.Common.Results;
 using EmployeeManagement.Domain.Entities.Banks;
 using EmployeeManagement.Persistence.Repositories.Banks;
+using EmployeeManagement.Domain.Entities.SystemCodes;
+using EmployeeManagement.Persistence.Repositories.SystemCodes;
 using EmployeeManagement.Persistence.Repositories.GenericRepositories;
 namespace EmployeeManagement.Persistence.Extensions;
 
@@ -32,8 +34,13 @@ public static class RegisterRepositoryExtensions
         #endregion
 
         #region Genetic Repositories
-        services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+        services.AddScoped(typeof(IReadRepository<,>), typeof(ReadRepository<,>));
         services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
+        #endregion
+        
+        #region SystemCode Repositories
+        services.AddScoped<ISystemCodeReadRepository, SystemCodeReadRepository>();
+        services.AddScoped<ISystemCodeWriteRepository, SystemCodeWriteRepository>();
         #endregion
 
         #region Unit of Work

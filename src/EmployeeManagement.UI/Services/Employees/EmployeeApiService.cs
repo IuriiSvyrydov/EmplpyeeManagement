@@ -167,11 +167,11 @@ public class EmployeeApiService : EmployeeApiServiceBase, IEmployeeApiService
     {
         try
         {
-            using var response = await _httpClient.DeleteAsync($"api/employees/{id}");
+            using var response = await _httpClient.DeleteAsync($"api/department/{id}");
 
             if (!response.IsSuccessStatusCode)
             {
-                return CreateErrorResult<bool>("API_ERROR",
+                return CreateErrorResult<bool>(Errors.APIERROR,
                     $"Delete error is failed. Status code: {response.StatusCode}");
             }
 
@@ -188,7 +188,7 @@ public class EmployeeApiService : EmployeeApiServiceBase, IEmployeeApiService
         }
         catch (HttpRequestException ex)
         {
-            return CreateErrorResult<Boolean>(Errors.HTTPREQUESTERROR,
+            return CreateErrorResult<bool>(Errors.HTTPREQUESTERROR,
                 $"Http Error Request: {ex.Message}");
         }
         catch (Exception ex)

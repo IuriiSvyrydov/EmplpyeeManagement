@@ -1,7 +1,4 @@
-﻿using EmployeeManagement.Domain.Entities.Departments.ValueObject;
-using EmployeeManagement.Domain.Entities.Departments;
-using EmployeeManagement.Domain.Entities.ValueObjects;
-
+﻿
 namespace EmployeeManagement.UI.Dtos;
 
 public class EmployeeDto

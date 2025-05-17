@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.UI.Services.Employees;
+﻿using EmployeeManagement.UI.Services.Departments;
+using EmployeeManagement.UI.Services.Employees;
 
 public static class RegisterServicesExtensions
 {
@@ -6,6 +7,8 @@ public static class RegisterServicesExtensions
     {
         services.AddHttpClient();
         services.AddScoped<IEmployeeApiService, EmployeeApiService>();
+      
+
 
         
        services.AddHttpClient("EmployeeAPI", client =>

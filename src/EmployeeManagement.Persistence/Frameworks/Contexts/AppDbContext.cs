@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using EmployeeManagement.Domain.Entities.Banks;
 using EmployeeManagement.Domain.Entities.Departments;
+using EmployeeManagement.Domain.Entities.Departments.ValueObject;
 using EmployeeManagement.Domain.Entities.Designations;
 using EmployeeManagement.Domain.Entities.Employees;
 using EmployeeManagement.Domain.Entities.LeaveTypes;
-using EmployeeManagement.Domain.Entities.Orders;
 using EmployeeManagement.Domain.Entities.SystemCodeDetails;
 using EmployeeManagement.Domain.Entities.SystemCodes;
 
@@ -32,7 +32,12 @@ public sealed class AppDbContext: IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.Ignore<DepartmentId>();
+        builder.Ignore<Code>();
+        builder.Ignore<Name>();
+
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
     }
 
 

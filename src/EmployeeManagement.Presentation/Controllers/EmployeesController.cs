@@ -42,7 +42,7 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpPut("{employeeId:guid}")]
-    public async Task<IActionResult> UpdateEmployee(Guid employeeId, UpdateEmployeeCommand command)
+    public async Task<IActionResult> UpdateEmployee( UpdateEmployeeCommand command)
     {
         var response = await _mediatr.Send(command);
         return Ok(response);

@@ -1,9 +1,10 @@
+using EmployeeManagement.Application.Messaging;
 using EmployeeManagement.Domain.Common.Results;
 using MediatR;
 
 namespace EmployeeManagement.Application.Features.Employees.Commands.CreateEmployee
 {
-    public class CreateEmployeeCommand : IRequest<Result<EmployeeResponse>>
+    public class CreateEmployeeCommand : IRequest<ResultT<EmployeeResponse>>
     {
       public string FirstName { get; set; }
         public string MiddleName { get; set; }

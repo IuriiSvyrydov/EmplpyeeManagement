@@ -5,12 +5,12 @@ namespace EmployeeManagement.Domain.Entities.SystemCodes.ValueObjects;
 
 public class SystemCodeId : ValueObject<Guid>
 {
-    private SystemCodeId() : base(Guid.Empty) { }
+    private SystemCodeId()  { }
     public SystemCodeId(Guid value) : base(value)
     {
     }
 
-    public static ValidationResult<SystemCodeId> Create(Guid value)
+    public static ValidationResult<SystemCodeId?> Create(Guid value)
     {
         var errors = new List<string>();
         if (value == Guid.Empty) errors.Add("SystemCodeId cannot be empty");
@@ -19,7 +19,7 @@ public class SystemCodeId : ValueObject<Guid>
             : ValidationResult<SystemCodeId>.Failed(errors);
     }
 
-    public static SystemCodeId NewId()
+    public static SystemCodeId? NewId()
     {
         return Create(Guid.NewGuid()).Value;
     }

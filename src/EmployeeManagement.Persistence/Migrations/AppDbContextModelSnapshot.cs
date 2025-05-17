@@ -22,6 +22,40 @@ namespace EmployeeManagement.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EmployeeManagement.Domain.Entities.Banks.Bank", b =>
+                {
+                    b.Property<Guid>("BankId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AccountNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreateById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BankId");
+
+                    b.ToTable("banks", (string)null);
+                });
+
             modelBuilder.Entity("EmployeeManagement.Domain.Entities.Departments.Department", b =>
                 {
                     b.Property<Guid>("DepartmentId")
@@ -29,17 +63,47 @@ namespace EmployeeManagement.Persistence.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("departments", (string)null);
+                });
+
+            modelBuilder.Entity("EmployeeManagement.Domain.Entities.Designations.Designation", b =>
+                {
+                    b.Property<Guid>("DesignationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CreateById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("DepartmentId");
+                    b.HasKey("DesignationId");
 
-                    b.ToTable("departments", (string)null);
+                    b.ToTable("designations", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeManagement.Domain.Entities.Employees.Employee", b =>
@@ -102,6 +166,103 @@ namespace EmployeeManagement.Persistence.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("employees", (string)null);
+                });
+
+            modelBuilder.Entity("EmployeeManagement.Domain.Entities.LeaveTypes.LeaveType", b =>
+                {
+                    b.Property<Guid>("LeaveTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreateById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LeaveTypeId");
+
+                    b.ToTable("leave_types", (string)null);
+                });
+
+            modelBuilder.Entity("EmployeeManagement.Domain.Entities.SystemCodeDetails.SystemCodeDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreateById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SystemCodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SystemCodeId");
+
+                    b.ToTable("system_code_details", (string)null);
+                });
+
+            modelBuilder.Entity("EmployeeManagement.Domain.Entities.SystemCodes.SystemCode", b =>
+                {
+                    b.Property<Guid>("SystemCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreateById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SystemCodeId");
+
+                    b.ToTable("system_codes", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeManagement.Domain.Entities.Users.User", b =>
@@ -319,6 +480,17 @@ namespace EmployeeManagement.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("EmployeeManagement.Domain.Entities.SystemCodeDetails.SystemCodeDetail", b =>
+                {
+                    b.HasOne("EmployeeManagement.Domain.Entities.SystemCodes.SystemCode", "SystemCode")
+                        .WithMany()
+                        .HasForeignKey("SystemCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SystemCode");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

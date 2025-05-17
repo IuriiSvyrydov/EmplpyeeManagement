@@ -1,5 +1,7 @@
-﻿using EmployeeManagement.Domain.Common.Results;
+﻿using EmployeeManagement.Application.Messaging;
+using EmployeeManagement.Domain.Common.Results;
 using MediatR;
+
 
 namespace EmployeeManagement.Application.Features.Employees.Commands.UpdateEmployee;
 
@@ -15,4 +17,4 @@ public record UpdateEmployeeCommand(
     string Address,
     string Designation,
     Guid DepartmentId
-) : IRequest<Result<EmployeeResponse>>;
+) : IRequest<ResultT<EmployeeResponse>>;

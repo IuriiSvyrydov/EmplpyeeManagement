@@ -1,10 +1,9 @@
 ﻿
-using EmployeeManagement.Domain.Entities.Employees;
 
 namespace EmployeeManagement.Domain.Common.Results;
 
-public interface IReadRepository<T> where T : class
+public interface IReadRepository<T, TId> where T : class
 {
-    Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<T?> GetByIdAsync(TId id, CancellationToken cancellationToken = default);
     Task<List<T>> GetAllAsync(CancellationToken cancellationToken = default);
 }

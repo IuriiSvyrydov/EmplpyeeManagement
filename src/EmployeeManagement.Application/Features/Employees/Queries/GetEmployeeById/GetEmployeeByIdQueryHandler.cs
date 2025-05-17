@@ -2,11 +2,13 @@
 using EmployeeManagement.Domain.Entities.Employees;
 using MediatR;
 using AutoMapper;
+using EmployeeManagement.Application.Messaging;
 using EmployeeManagement.Domain.Common.Errors;
+using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
 
 namespace EmployeeManagement.Application.Features.Employees.Queries.GetEmployeeById;
 
-public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery, Result<EmployeeResponse>>
+public class GetEmployeeByIdQueryHandler : IQueryHandler<GetEmployeeByIdQuery, EmployeeResponse>
 {
     private readonly IEmployeeReadRepository _readRepository;
     private readonly IMapper _mapper;
@@ -17,11 +19,12 @@ public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery,
         _mapper = mapper;
     }
 
-    public async Task<Result<EmployeeResponse>> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ResultT<EmployeeResponse>> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
     {
-        var employee = await _readRepository.GetByIdAsync(request.EmployeeId, cancellationToken);
+        var employeeId = new EmployeeId(request.EmployeeId);
+        var employee = await _readRepository.GetByIdAsync(employeeId, cancellationToken);
         return employee is null 
-            ? Result<EmployeeResponse>.Failure(Error.NotFound("Error not found",$"Employee with Id {request.EmployeeId} not found"))
-            : Result<EmployeeResponse>.Success(_mapper.Map<EmployeeResponse>(employee), "Successfully retrieved employee");
+            ? ResultT<EmployeeResponse>.Failed(Error.NotFound("Error not found",$"Employee with Id {request.EmployeeId} not found"))
+            : ResultT<EmployeeResponse>.Success(_mapper.Map<EmployeeResponse>(employee));
     }
 }

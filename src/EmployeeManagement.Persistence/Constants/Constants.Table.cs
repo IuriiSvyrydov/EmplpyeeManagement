@@ -16,6 +16,7 @@ namespace EmployeeManagement.Persistence.Constants
             public const string Banks = "banks";
             public const string SystemCodeDetail = "system_code_details";
             public const string LeaveTypes = "leave_types";
+            public const string SystemCodes = "system_codes";
             public const string Users = "users";
         }
     }

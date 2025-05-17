@@ -10,7 +10,7 @@ namespace EmployeeManagement.Domain.Entities.SystemCodeDetails;
 public sealed class SystemCodeDetail : UserActivity
     {
         public SystemCodeDetailId Id { get; set; }
-        public SystemCodeId SystemCodeId { get; set; }
+        public Guid SystemCodeId { get; set; }
         public SystemCode SystemCode { get; set; }
         public Code  Code { get; set; }
         public Description Description { get; set; }

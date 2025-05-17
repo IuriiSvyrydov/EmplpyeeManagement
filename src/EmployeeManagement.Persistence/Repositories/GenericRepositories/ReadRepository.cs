@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Persistence.Repositories.GenericRepositories;
 
-public class ReadRepository<T> : IReadRepository<T> where T : class
+public class ReadRepository<T,TId> : IReadRepository<T,TId> where T : class
 {
     protected readonly DbContext _context;
     protected readonly DbSet<T> _dbSet;
@@ -15,9 +15,11 @@ public class ReadRepository<T> : IReadRepository<T> where T : class
         _dbSet = context.Set<T>();
     }
 
-    public virtual async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+   
+
+    public async Task<T?> GetByIdAsync(TId id, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.FindAsync(id, cancellationToken);
+        return await _dbSet.FindAsync(id , cancellationToken);
     }
 
     public virtual async Task<List<T>> GetAllAsync(CancellationToken cancellationToken = default)

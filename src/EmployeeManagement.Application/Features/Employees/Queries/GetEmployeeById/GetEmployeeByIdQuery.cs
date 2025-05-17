@@ -1,9 +1,8 @@
 ﻿
-using EmployeeManagement.Domain.Common.Results;
-using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
-using MediatR;
+using EmployeeManagement.Application.Messaging;
+
 
 namespace EmployeeManagement.Application.Features.Employees.Queries.GetEmployeeById;
 
-public record GetEmployeeByIdQuery(Guid EmployeeId): IRequest<Result<EmployeeResponse>>;
+public record GetEmployeeByIdQuery(Guid EmployeeId): IQuery<EmployeeResponse>;
 

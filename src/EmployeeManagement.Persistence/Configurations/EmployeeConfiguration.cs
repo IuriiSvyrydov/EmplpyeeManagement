@@ -1,4 +1,6 @@
-﻿using EmployeeManagement.Domain.Entities.Employees;
+﻿using EmployeeManagement.Domain.Entities.Departments.ValueObject;
+using EmployeeManagement.Domain.Entities.Designations;
+using EmployeeManagement.Domain.Entities.Employees;
 using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
 using EmployeeManagement.Domain.Entities.ValueObjects;
 using EmployeeManagement.Persistence.Converters;
@@ -39,5 +41,12 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             .HasConversion(x=>x.Value,value=>new Country(value));
         builder.Property(x => x.Address).IsRequired()
             .HasConversion(x=>x.Value,value=>new Address(value));
+        builder.Property(x => x.DepartmentId).IsRequired()
+            .HasConversion(x=>x.Value,value=>new DepartmentId(value));
+        builder.HasOne(x => x.Department)
+            .WithMany(x => x.Employees)
+            .HasForeignKey(x => x.DepartmentId);
+        builder.Property(x => x.Designation).IsRequired(false);
+
     }
 }

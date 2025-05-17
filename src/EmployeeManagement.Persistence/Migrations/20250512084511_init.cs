@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -53,15 +54,85 @@ namespace EmployeeManagement.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "banks",
+                columns: table => new
+                {
+                    BankId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_banks", x => x.BankId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "departments",
                 columns: table => new
                 {
                     DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_departments", x => x.DepartmentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "designations",
+                columns: table => new
+                {
+                    DesignationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreateById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_designations", x => x.DesignationId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "leave_types",
+                columns: table => new
+                {
+                    LeaveTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_leave_types", x => x.LeaveTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "system_codes",
+                columns: table => new
+                {
+                    SystemCodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_codes", x => x.SystemCodeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -201,6 +272,30 @@ namespace EmployeeManagement.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "system_code_details",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SystemCodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreateById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_code_details", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_system_code_details_system_codes_SystemCodeId",
+                        column: x => x.SystemCodeId,
+                        principalTable: "system_codes",
+                        principalColumn: "SystemCodeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -244,6 +339,11 @@ namespace EmployeeManagement.Persistence.Migrations
                 name: "IX_employees_DepartmentId",
                 table: "employees",
                 column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_system_code_details_SystemCodeId",
+                table: "system_code_details",
+                column: "SystemCodeId");
         }
 
         /// <inheritdoc />
@@ -265,7 +365,19 @@ namespace EmployeeManagement.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "banks");
+
+            migrationBuilder.DropTable(
+                name: "designations");
+
+            migrationBuilder.DropTable(
                 name: "employees");
+
+            migrationBuilder.DropTable(
+                name: "leave_types");
+
+            migrationBuilder.DropTable(
+                name: "system_code_details");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -275,6 +387,9 @@ namespace EmployeeManagement.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "departments");
+
+            migrationBuilder.DropTable(
+                name: "system_codes");
         }
     }
 }

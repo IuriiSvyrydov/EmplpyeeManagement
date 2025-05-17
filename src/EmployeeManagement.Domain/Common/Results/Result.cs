@@ -1,30 +1,46 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 using EmployeeManagement.Domain.Common.Errors;
 
-namespace EmployeeManagement.Domain.Common.Results
-{
-    public class Result<T>
-    {
-        public T? Value { get; }
-        public bool IsSuccess { get; }
-        public bool IsFailure => !IsSuccess;
-        public Error Error { get; }
+namespace EmployeeManagement.Domain.Common.Results;
 
-        public Result(T value)
+    public class Result
+    {
+        protected Result()
         {
             IsSuccess = true;
-            Value = value;
-            Error = Error.None;
+            Error = default;
         }
-        public Result(Error error)
+        protected Result(Error error)
         {
             IsSuccess = false;
             Error = error;
         }
-        public static Result<T> Success(T value, string successfullyRetrievedEmployee) => new(value);
-        public static Result<T> Failure(Error error) => new(error);
+        public bool IsSuccess { get; }
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public Error? Error { get; }
+        public static implicit operator Result(Error error)=>new(error);
+        public static Result Success()=>new();
+        public static Result Failed(Error error)=>new(error);
+
     }
-}
+    public class ResultT<T>:Result
+    {
+        private readonly T _value;
+        protected ResultT(T value)
+        {
+            _value = value;
+        }
+        protected ResultT(Error error):base(error)
+        {
+            _value=default!;
+        }
+        
+        public T Value=> IsSuccess ? _value : throw new InvalidOperationException("Result is not a success");
+        public static implicit operator ResultT<T>(Error error)=>new(error);
+        public static implicit operator ResultT<T>(T value) => new(value);
+        public static ResultT<T> Success(T value)=>new(value);
+        public static ResultT<T> Failed(Error error)=>new(error);
+        
+
+
+    }

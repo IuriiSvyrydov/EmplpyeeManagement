@@ -1,13 +1,15 @@
 
+using EmployeeManagement.Application.Messaging;
 using MediatR;
 using EmployeeManagement.Domain.Common.Results;
 using EmployeeManagement.Domain.Entities.Employees;
 using EmployeeManagement.Domain.Common.Errors;
+using EmployeeManagement.Domain.Entities.Employees.ValueObjects;
 
 
 namespace EmployeeManagement.Application.Features.Employees.Commands.DeleteEmployee;
 
-    public sealed class DeleteEmployeeCommandHandler:IRequestHandler<DeleteEmployeeCommand, Result<bool>>
+    public sealed class DeleteEmployeeCommandHandler:IRequestHandler<DeleteEmployeeCommand, ResultT<bool>>
     {
         private readonly IEmployeeReadRepository _readRepository;
         private readonly IEmployeeWriteRepository _writeRepository;
@@ -18,14 +20,15 @@ namespace EmployeeManagement.Application.Features.Employees.Commands.DeleteEmplo
             _writeRepository = writeRepository;
         }
         
-        public async Task<Result<bool>> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ResultT<bool>> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var employee = await _readRepository.GetByIdAsync(request.EmployeeId, cancellationToken);
+            var employeeId = new EmployeeId(request.EmployeeId);
+            var employee = await _readRepository.GetByIdAsync(employeeId, cancellationToken);
             if (employee is null)
             {
-                return Result<bool>.Failure(Error.NotFound("Error not found",$"Employee with Id {request.EmployeeId} not found"));
+                return ResultT<bool>.Failed(Error.NotFound("Error not found",$"Employee with Id {request.EmployeeId} not found"));
             }
             await _writeRepository.DeleteAsync(employee, cancellationToken);
-            return Result<bool>.Success(true, "Employee deleted successfully");
+            return ResultT<bool>.Success( true);
         }
     }
